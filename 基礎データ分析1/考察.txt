@@ -1,0 +1,167 @@
+相関係数R
+0<R<=0.2 なし
+0.2<R<=0.4 弱い相関
+0.4<R<=0.7 やや強い
+0.7<R<=1 強い
+
+目的変数　Mortality(年齢調整死亡率)
+Rainfall(年間平均降雨量) 		0.51		やや強い
+Education(25歳以上の教育年数の中央値) -0.51		やや強い(負)
+Popden(人口密度) 			0.26		弱い
+Nonwhite(非白人の割合) 		0.64		やや強い
+NOX(窒素酸化物)			-0.078		なし
+SO2(二酸化硫黄) 			0.43		やや強い
+
+課題1:SO2とMoralityにはやや強い正の相関がある(SO2が増えればMoralityも上がる)
+
+課題2:　
+
+
+因子分析
+
+
+相関高いのまとめ
+Rainfall:Education,Nonwhite,NOX,Mortality
+Education:Rainfall,Mortality
+Popden:SO2
+Nonwhite:Rainfall,Mortality
+NOX:Rainfall,SO2
+SO2:Popden,NOX,Mortality
+Mortality:Rainfall,Education,Nonwhite,SO2
+
+数式
+予想:Mortality,Nonwhite,Rainfall,(Education)とSO2,NOX,Popden
+
+
+
+	第1因子	第2因子
+Rainfall	-0.640	-0.532
+Education0.583	0.099
+Popden	-0.250	0.365
+Nonwhite	-0.636	0.003
+NOX	0.166	0.684
+SO2	-0.380	0.679
+Mortality-0.903	0.119
+
+
+第1因子(共通):Mortality,Nonwhite,Rainfall,(Education)
+第2因子:SO2,NOX,Popden,(Rainfall)
+
+因子でまとめるとMortalityとSO2は微妙な関係
+SO2とマイナスRainfall,マイナスRainfallとマイナスMortality
+
+
+======
+改良(8月24日)
+・P値が0.05（あるいは0.01）未満のとき
+　→上の表に基づき、ピアソン相関係数から相関を解釈
+
+・P値が0.05（あるいは0.01）以上のとき
+　→データ数不足のため相関分析困難（あるいは相関なし）
+
+
+          寄与率
+PC1  0.372279
+PC2  0.264314
+PC3  0.146582
+PC4  0.081633
+PC5  0.059854
+PC6  0.045139
+PC7  0.030198
+
+                  1         2         3
+Rainfall   0.612028 -0.521687  0.199794
+Education -0.535781  0.086158 -0.454555
+Popden     0.208908  0.388524  0.332979
+Nonwhite   0.765169 -0.044801 -0.454108
+NOX       -0.111905  0.686799 -0.274064
+SO2        0.373320  0.722508  0.206873
+Mortality  0.883346  0.093548  0.090905
+
+
+0.5を基準
+1:Rainfall,Nonwhite,Mortality,(Education)
+2:NOX,SO2,(Rainfall)
+3:なし、(Education,Popden,Nonwhite)
+
+1:人間関係?
+2:自然現象
+3:?
+
+RainfallがSO2とMortalityの共通点
+酸性雨:二酸化硫黄（SO2）や窒素酸化物（NOx）などを起源とする酸性物質が雨・雪・霧などに溶け込み、通常より強い酸性を示す現象
+人体への影響:酸性雨による人体への影響は、目や喉、鼻や皮膚を刺激したり、髪の色を緑色に変色させたりする。金属は酸に溶け出しやすいので、土壌に固定などで使われているアルミニウムなどを酸性雨が溶かしてしまいます。溶け出した物質が、河川や海などに溶け出すことによって、飲料水などに混ざり、アルミニウムなどの　化学物質が、私たちの体に蓄積することによって、アルツハイマー病などの病気の原因のひとつになる。
+
+相関係数よりSO2とRainfallは相関がないが、NOXとSO2,Rainfallは負の相関
+酸性雨の量がMortalityに影響
+
+
+
+
+
+グラフの場合分け
+1:Education
+2:NOX,popden,SO2:工場ポイ
+3:Rainfall,Nonwhite,Mortality:雨が降ると黒人が増え死亡率が上がる
+
+偏相関?
+
+
+========================
+8月25日(改良)
+偏相関を計算
+1:Education 孤立
+2.NOX,popden,SO2
+
+NOXの影響を除く:0.3986(0.43)
+Popdenの影響を除く:0.3798(0.41)
+SO2の影響を除く:-0.110(0.17)
+
+3.Rainfall,Nonwhite,Mortality
+Rainfall:0.552(0.64)
+Nonwhite:0.349(0.51)
+Mortality:0.1296(0.41)
+
+Mortalityの影響を取り除くとRainfallとNonwhiteの偏相関は0.3ほど下がった
+⇨RainfallとNonwhite自身にはあんま関係ない
+
+SO2とMortalityに間接的に影響しているものを調べる。
+SO2とMortalityの相関:0.43
+Rainfall:0.56
+Education:0.36
+Popden:0.36
+Nonwhite:0.43
+NOX:0.50
+
+誤差が1番あるのはRainfall
+Rainfallを除くと2変数の相関はより強くなった
+3変数:
+RainfallとMortalityの相関は0.51⇨SO2を除くと0.62
+SO2とRainfallは-0.11⇨-0.41
+
+SO2が減るとRainfallは増える
+SO2が増える原因は主に工場
+台風レベルの降水で工場ぶっ飛ばしてるの?
+酸性雨とSO2が別物と考えると雨が増えることでSO2から別の物体に変わることが多くなる?
+
+SO2が増えるとMortalityも増える
+SO2自身が危険?
+
+Rainfallが増えるとMortalityも増える
+雨天時:事故増加、鬱、在宅増える(運動不足)
+
+結論:間接的な影響:Rainfall,(NOX?)
+
+
+
+'Mortality','NOX','SO2'
+Mortality:0.49(0.41)
+NOX:0.5(0.43)
+SO2:-0.3(-0.078)
+
+SO2を除いたMortalityとNOXの偏相関は-0.3になった
+NOXが増えるとMortalityは減る
+SOXよりは影響が少ない?
+
+
+

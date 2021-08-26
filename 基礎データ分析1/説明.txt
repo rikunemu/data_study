@@ -1,0 +1,10 @@
+data_analysis.py:課題1,2についてのソースコード
+考察.txt:考察
+画像フォルダ:色々な画像
+result3.csv:因子分析の結果
+city_data.csv:ある都市のデータ
+partial_correlation_coefficinet.py:偏相関係数を求めるソースコード
+
+やりたいこと
+課題1:SO2とMortalityに関係あるか
+課題2:課題1について間接的な影響はあるか
