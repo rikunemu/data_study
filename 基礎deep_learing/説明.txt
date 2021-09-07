@@ -1,0 +1,26 @@
+
+batch_aize
+
+全体で10000個のデータ
+1グループ10個の場合
+1000個のグループ
+
+1万個から500個取ってきただけ
+batchsize*step_per_eloch=10040
+
+
+val 800個のデータ
+20*10=200個しか取ってない
+batchsize*validation_steps=800
+
+batchsizeが2桁くらいになるように調整
+
+500個のtarinデータで学習して200個のvalで検証
+
+Adamは便利
+sdgs
+
+書籍はドキュメントを見て更新
+
+
+googlecolabはTPUにすると良い
