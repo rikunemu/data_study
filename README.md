@@ -5,3 +5,5 @@
 犬猫分析　約1万枚
 ## mask_model.ipynb
 マスク画像分析
+## Mnist_GAN.ipynb
+GANの基礎
