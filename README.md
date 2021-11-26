@@ -1,9 +1,8 @@
 # data_study  
-## Emotions_model.ipynb
-感情分析　約9万枚使用
-## dogcat_data.ipynb
-犬猫分析　約1万枚
-## mask_model.ipynb
-マスク画像分析
-## Mnist_GAN.ipynb
-GANの基礎
+## base_data_analysis
+簡単な町のデータを用いた分析
+## mediapipe
+mediapipeを用いてフォルダにある顔画像を特徴点を取りcsvに保存する
+## streamlit
+画像分析アプリ
+
