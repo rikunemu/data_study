@@ -19,30 +19,38 @@ def track_faces_in_images(file_list,max_num_faces,min_detection_confidence):
     drawing_spec = mp_drawing.DrawingSpec(thickness=1, circle_radius=1, color=(0,255,0))
     annotated_image=[]
     multi_faceednesses=[]
-
+    """
     with mp_face_mesh.FaceMesh(
         static_image_mode=True,
         max_num_faces=max_num_faces,
         refine_landmarks=True,
         min_detection_confidence=min_detection_confidence) as face_mesh:
-        for upload_file in file_list:
-            #image=cv2.imdecode(np.frombuffer(upload_file.read(),np.uint8),1)
-            #image=cv2.flip(image,1)
-            image=np.array(upload_file)
-            results = face_mesh.process(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
-            if not results.multi_face_landmarks:
-                continue
-            annotated_image = image.copy()
-            #multi_faceednesses.append(results.multi_faceednesses)
-            for face_landmarks in results.multi_face_landmarks:
-                mp_drawing.draw_landmarks(
-                    image=annotated_image,
-                    landmark_list=face_landmarks,
-                    connections=mp_face_mesh.FACEMESH_TESSELATION,
-                    landmark_drawing_spec=None,
-                    connection_drawing_spec=mp_drawing_styles
-                    .get_default_face_mesh_tesselation_style())
-            annotated_image.append(image)
+    """
+    for upload_file in file_list:
+        
+        image=cv2.imdecode(np.frombuffer(upload_file.read(),np.uint8),1)
+        image=cv2.flip(image,1)
+        image=np.array(image)
+        
+        results = mp_face_mesh.FaceMesh(
+            static_image_mode=True,
+            max_num_faces=max_num_faces,
+            refine_landmarks=True,
+            min_detection_confidence=min_detection_confidence).process(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
+        st.success("sucess")
+        if not results.multi_face_landmarks:
+            continue
+        annotated_image = image.copy()
+        #multi_faceednesses.append(results.multi_faceednesses)
+        for face_landmarks in results.multi_face_landmarks:
+            mp_drawing.draw_landmarks(
+                image=annotated_image,
+                landmark_list=face_landmarks,
+                connections=mp_face_mesh.FACEMESH_TESSELATION,
+                landmark_drawing_spec=None,
+                connection_drawing_spec=mp_drawing_styles
+                .get_default_face_mesh_tesselation_style())
+        annotated_image.append(image)
         
     return annotated_image,multi_faceednesses
 

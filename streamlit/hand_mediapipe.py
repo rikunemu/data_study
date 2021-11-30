@@ -8,7 +8,6 @@ mp_hands = mp.solutions.hands
 def track_hands_in_images(file_list, max_num_hands, min_detection_confidence):
     annotated_images = []
     multi_handednesses = []
-    
     with mp_hands.Hands(
         static_image_mode=True,
         max_num_hands=max_num_hands,
