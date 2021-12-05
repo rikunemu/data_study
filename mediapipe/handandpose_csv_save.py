@@ -67,6 +67,7 @@ def hol_mediapipe_static(dir_input, dir_output_image, dir_output_csv):
         mp_drawing.draw_landmarks(
             annotated_image, results.pose_landmarks, mp_holistic.POSE_CONNECTIONS)
         if results.face_landmarks:
+            flag=1
             for xyz, face_landmark in enumerate(results.face_landmarks.landmark):
                 col_label.append("face_"+str(xyz) + "_x")
                 col_label.append("face_"+str(xyz) + "_y")
@@ -81,9 +82,10 @@ def hol_mediapipe_static(dir_input, dir_output_image, dir_output_csv):
                 col_label.append("face_"+str(xyz) + "_y")
                 col_label.append("face_"+str(xyz) + "_z")
                 for _ in range(3):
-                    #facemesh_csv.append(np.nan)
+                    #holmesh_csv.append(np.nan)
                     holmesh_csv.append("NAN")
         if results.left_hand_landmarks:
+            flag=1
             for xyz, left_hand_landmark in enumerate(results.left_hand_landmarks.landmark):
                 col_label.append("left_hand_"+str(xyz) + "_x")
                 col_label.append("left_hand_"+str(xyz) + "_y")
@@ -98,9 +100,10 @@ def hol_mediapipe_static(dir_input, dir_output_image, dir_output_csv):
                 col_label.append("left_hand_"+str(xyz) + "_y")
                 col_label.append("left_hand_"+str(xyz) + "_z")
                 for _ in range(3):
-                    #facemesh_csv.append(np.nan)
+                    #holmesh_csv.append(np.nan)
                     holmesh_csv.append("NAN")
         if results.right_hand_landmarks:
+            flag=1
             for xyz, right_hand_landmark in enumerate(results.right_hand_landmarks.landmark):
                 col_label.append("right_hand_"+str(xyz) + "_x")
                 col_label.append("right_hand_"+str(xyz) + "_y")
@@ -115,9 +118,10 @@ def hol_mediapipe_static(dir_input, dir_output_image, dir_output_csv):
                 col_label.append("right_hand_"+str(xyz) + "_y")
                 col_label.append("right_hand_"+str(xyz) + "_z")
                 for _ in range(3):
-                    #facemesh_csv.append(np.nan)
+                    #holmesh_csv.append(np.nan)
                     holmesh_csv.append("NAN")
         if results.pose_landmarks:
+            flag=1
             for xyz, pose_landmark in enumerate(results.pose_landmarks.landmark):
                 col_label.append("pose_"+str(xyz) + "_x")
                 col_label.append("pose_"+str(xyz) + "_y")
@@ -132,7 +136,7 @@ def hol_mediapipe_static(dir_input, dir_output_image, dir_output_csv):
                 col_label.append("pose_"+str(xyz) + "_y")
                 col_label.append("pose_"+str(xyz) + "_z")
                 for _ in range(3):
-                    #facemesh_csv.append(np.nan)
+                    #holmesh_csv.append(np.nan)
                     holmesh_csv.append("NAN")
       
       # 1枚目の画像をDataFrame構造で保存
