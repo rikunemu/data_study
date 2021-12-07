@@ -14,19 +14,24 @@ mp_drawing = mp.solutions.drawing_utils
 mp_drawing_styles = mp.solutions.drawing_styles
 mp_holistic = mp.solutions.holistic
 
-#dir_input=r"D:\Face\valid\sad\sad\*"
-dir_input=r"/Users/shinohararikunin/Desktop/data_save/results/*"
-#dir_output_image=r"D:\Face\csv_save\valid\sad/"
-dir_output_image=r"/Users/shinohararikunin/Desktop/data_save/medipipe_results/"
-#dir_output_csv=r"D:\Face\csv_save\valid_sad.csv"
-dir_output_csv=r"/Users/shinohararikunin/Desktop/data_save/poseA.csv"
+dir_input=r"D:\output_file\image\Normal"
+
+dir_output_image=r"D:\output_file\image\Mediapipe"
+
+dir_output_csv=r"D:\output_file\csvfile"
+
 flag=0
+
+len_sign=20
+list_class=["test","train"]
 
 
 def hol_mediapipe_static(dir_input, dir_output_image, dir_output_csv):
   
   files = glob.glob(dir_input)
   files.sort()
+  os.mkdir(dir_output_image)
+  dir_output_image=dir_output_image+"/"
   
   with mp_holistic.Holistic(
     static_image_mode=True,
@@ -155,6 +160,20 @@ def hol_mediapipe_static(dir_input, dir_output_image, dir_output_csv):
       time.sleep(1)
   data.to_csv(dir_output_csv)
 
-  return data
+  return 
 
-hol_mediapipe_static(dir_input,dir_output_image,dir_output_csv)
+for i in range(len_sign):
+    file_path="sign_"+str(i+1)
+    for class_i in tqdm(list_class):
+        #count=1
+        basefile_inputpath=os.path.join(dir_input,class_i,file_path)
+        basefile_outputpath=os.path.join(dir_output_image,class_i,file_path)
+        dir_output_csvpath=os.path.join(dir_output_csv,class_i,file_path)
+        #ディレクトリの中身分ループ
+        for index in tqdm(range(len(os.listdir(basefile_inputpath)))):
+          #print(file_name)
+          hol_mediapipe_static(basefile_inputpath+r"\video_number"+str(index+1)+r"\*",
+          basefile_outputpath+r"\video_number"+str(index+1),
+          dir_output_csvpath+r"\videonum"+str(index+1)+r".csv")
+          #count+=1
+#hol_mediapipe_static(dir_input,dir_output_image,dir_output_csv)
