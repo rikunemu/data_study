@@ -7,14 +7,13 @@ from PIL import Image, ImageOps
 
 st.set_option('deprecation.showfileUploaderEncoding', False)
 desu='/Users/shinohararikunin/Desktop/model'
-modeldesu = tf.keras.models.load_model(desu+'/maskmodel.h5')
+modeldesu = tf.keras.models.load_model(desu+'/facemodel.hdf5')
 
-modeldesu.load_weights(desu+'/mask.h5')
+#modeldesu.load_weights(desu+'/faceweightepoch10.h5')
 
-
+faceclasses=["Angry", "Disgust", "Fear", "Happy", "Neutral", "Sad", "Surprise"]
 
 @st.cache(allow_output_mutation=True)
-
 def get_square_image(target_img):
 	'''画像に余白を加えて正方形にする'''
 	bg_color = target_img.resize((1, 1)).getpixel((0, 0))  # 余白は全体の平均色
@@ -31,33 +30,24 @@ def get_square_image(target_img):
 		return resized_img
 
 def pre_image(image_pil_array:'PIL.Image'):
-	image_pil_array=get_square_image(image_pil_array)
-	img=image_pil_array.resize((150,150))
+	#image_pil_array=get_square_image(image_pil_array)
+	img=image_pil_array.resize((48,48))
 	img=np.expand_dims(img,0)
-	img=img/255.0
+	#img=img/255.0
 	#img_array=np.expand_dims(np.array(img).flatten()/255,0)
 	img_array=np.array(img)
-	result=modeldesu.predict(img_array)
-	return 1-np.float(result[0][0])
+	input_shape=(48,48,1)
+	#x_train = img_array.reshape(1, 48, 48)
+
+	pred=modeldesu.predict(img)
+	#top_indices = pred.argsort()[-3:][::-1]
+	#result = [(faceclasses[i], pred[i]) for i in top_indices]
+
+	#return result[0], result[1], result[2]
+	return pred
 
 
 
-
-def get_result(prediction):
-	'''0-1の数値を受け取って表示用のテキストを返す'''
-	if prediction < 0.05:
-		result = "確実にマスク"
-	elif prediction < 0.2:
-		result = "ほぼマスク"
-	elif prediction < 0.5:
-		result = "どちらかといえばマスク"
-	elif prediction < 0.8:
-		result = "どちらかといえばマスクなし"
-	elif prediction < 0.95:
-		result = "ほぼマスクなし"
-	else:
-		result = "確実にマスクなし"
-	return result
 
 def main():
     
@@ -77,10 +67,15 @@ def main():
 
         
         
-        pred =pre_image(image_pil_array)
-        
-
-        st.write('機械学習モデルは画像を', get_result(pred), 'と予測しました。')
+        result=pre_image(image_pil_array)
+        #st.write('機械学習モデルは画像を', first, 'と予測しました。')
+        st.write('機械学習モデルはAngryを', result[0][0], 'と予測しました。')
+        st.write('機械学習モデルはDisgustを', result[0][1], 'と予測しました。')
+        st.write('機械学習モデルはFearを', result[0][2], 'と予測しました。')
+        st.write('機械学習モデルはHappyを', result[0][3], 'と予測しました。')
+        st.write('機械学習モデルはNeutralを', result[0][4], 'と予測しました。')
+        st.write('機械学習モデルはSadを', result[0][5], 'と予測しました。')
+        st.write('機械学習モデルはSurpriseを', result[0][6], 'と予測しました。')
 
         
 
