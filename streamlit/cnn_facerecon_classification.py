@@ -3,8 +3,6 @@ import streamlit as st
 import tensorflow as tf
 from PIL import Image, ImageOps
 
-
-
 st.set_option('deprecation.showfileUploaderEncoding', False)
 desu='/Users/shinohararikunin/Desktop/model'
 modeldesu = tf.keras.models.load_model(desu+'/facemodel.hdf5')
@@ -30,24 +28,12 @@ def get_square_image(target_img):
 		return resized_img
 
 def pre_image(image_pil_array:'PIL.Image'):
-	#image_pil_array=get_square_image(image_pil_array)
+	image_pil_array=get_square_image(image_pil_array)
 	img=image_pil_array.resize((48,48))
 	img=np.expand_dims(img,0)
-	#img=img/255.0
-	#img_array=np.expand_dims(np.array(img).flatten()/255,0)
-	img_array=np.array(img)
-	input_shape=(48,48,1)
-	#x_train = img_array.reshape(1, 48, 48)
-
+	img=img/255.0
 	pred=modeldesu.predict(img)
-	#top_indices = pred.argsort()[-3:][::-1]
-	#result = [(faceclasses[i], pred[i]) for i in top_indices]
-
-	#return result[0], result[1], result[2]
 	return pred
-
-
-
 
 def main():
     
@@ -64,21 +50,16 @@ def main():
             image_pil_array, caption='uploaded image',
             use_column_width=True
         )
-
-        
-        
+ 
         result=pre_image(image_pil_array)
         #st.write('機械学習モデルは画像を', first, 'と予測しました。')
-        st.write('機械学習モデルはAngryを', result[0][0], 'と予測しました。')
-        st.write('機械学習モデルはDisgustを', result[0][1], 'と予測しました。')
-        st.write('機械学習モデルはFearを', result[0][2], 'と予測しました。')
-        st.write('機械学習モデルはHappyを', result[0][3], 'と予測しました。')
-        st.write('機械学習モデルはNeutralを', result[0][4], 'と予測しました。')
-        st.write('機械学習モデルはSadを', result[0][5], 'と予測しました。')
-        st.write('機械学習モデルはSurpriseを', result[0][6], 'と予測しました。')
-
-        
-
+        st.slider('Angry:', 0.0, 1.0, float(result[0][0]), 0.01)
+        st.slider('Disgust:', 0.0, 1.0, float(result[0][1]), 0.01)
+        st.slider('Fear:', 0.0, 1.0, float(result[0][2]), 0.01)
+        st.slider('Happy:', 0.0, 1.0, float(result[0][3]), 0.01)
+        st.slider('Neutral:', 0.0, 1.0, float(result[0][4]), 0.01)
+        st.slider('Sad:', 0.0, 1.0, float(result[0][5]), 0.01)
+        st.slider('Surprise:', 0.0, 1.0, float(result[0][6]), 0.01)
 
 if __name__ == '__main__':
     main()
