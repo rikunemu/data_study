@@ -3,18 +3,22 @@ import time
 import mediapipe as mp
 import pandas as pd
 import streamlit as st
-import tensorflow as tf
+#import keras
+from keras import models
+from keras.models import Sequential
 import numpy as np
 mp_drawing = mp.solutions.drawing_utils
 mp_drawing_styles = mp.solutions.drawing_styles
 mp_holistic = mp.solutions.holistic
 desu='/Users/shinohararikunin/Desktop/model'
-modeldesu = tf.keras.models.load_model(desu+'/lstmpose.hdf5')
-
-def medi_image(image_pil_array:'PIL.Image',results):
+modeldesu = models.load_model(desu+'/lstmpose.h5')
+idx=0
+data=[]
+def medi_image(image_pil_array:'PIL.Image',results,idx,data):
+    
 
     if not results.face_landmarks and not results.left_hand_landmarks and not results.right_hand_landmarks and not results.pose_landmarks:
-        a=1
+        return
     # mediapipeで推定可能な画像に対して、3次元カラムと推定3次元座標をlistに追加
     else:
         annotated_image = image.copy()
@@ -58,19 +62,33 @@ def medi_image(image_pil_array:'PIL.Image',results):
                     holmesh_csv.append(0.1)
     
     # 1枚目の画像をDataFrame構造で保存
-    data = pd.DataFrame([holmesh_csv], columns=col_label)
-    time.sleep(1)
+    if idx == 0:
+        data = pd.DataFrame([holmesh_csv], columns=col_label)
+        idx+=1
+    # 1枚目と2枚目以降のDataFrameを縦に結合
+    else:
+        data1 = pd.DataFrame([holmesh_csv], columns=col_label)
+        data = pd.concat([data, data1], ignore_index=True)
+        idx+=1
+    #time.sleep(1)
 
-    return data
+    return data,idx
 
 def pre_image(data):
     target=[]
     target.append(data.iloc[0:30,:])
+    target = np.array(target).reshape(1, 30,162)
     x_target = np.array(target)
     x_test = x_target.astype(np.float)
+    #pred=modeldesu.predice(x_test)
+    pred = np.argmax(modeldesu.predict(x_test),axis=-1)
+
+    return pred
 
 
 st.title('ポーズ分類')
+image_loc = st.empty()
+scores_st = st.empty()
 # For webcam input:
 cap = cv2.VideoCapture(0)
 with mp_holistic.Holistic(
@@ -87,10 +105,18 @@ with mp_holistic.Holistic(
     # pass by reference.
     #image.flags.writeable = False
     image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-    results = holistic.process(image)
+    image_loc.image(image)
+
+    results= holistic.process(image)
     #st.write(1)
-    df=medi_image(image,results)
-    st.write(df)
+    data,idx=medi_image(image,results,idx,data)
+    if idx==30:
+        #st.write(data)
+        kekka=pre_image(data)
+        idx=0
+        data=0
+        scores_st.text(kekka)
+        
     if cv2.waitKey(5) & 0xFF == 27:
       break
 cap.release()
