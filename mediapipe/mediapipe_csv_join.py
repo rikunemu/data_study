@@ -10,8 +10,8 @@ from tqdm import tqdm
 len_sign=20
 count=0
 resultcsv=[]
-dir_input=r"D:\output_file\csvfile\train"
-dir_output=r"D:\output_file\join_csv\csvtrainresult.csv"
+dir_input=r"D:\output_file\csvfile\test"
+dir_output=r"D:\output_file\join_csv\csvtestresult.csv"
 def csvjoin_static(fp,cnt):
   files=os.listdir(fp)
   file_name=natsorted(files)
@@ -20,7 +20,18 @@ def csvjoin_static(fp,cnt):
     print(file)
     filepath=fp+'/'+file
     df=pd.read_csv(filepath)
-    df=df.iloc[:,478*3+21*3+1:]
+    if 0<=len(df)<=60:
+      df=df.iloc[:30,478*3+21*3+1:]
+    elif 61<=len(df)<=90:
+      df=df[::2]
+      df=df.iloc[:30,478*3+21*3+1:]
+    elif 91<=len(df)<=120:
+      df=df[::3]
+      df=df.iloc[:30,478*3+21*3+1:]
+    else:
+      df=df[::4]
+      df=df.iloc[:30,478*3+21*3+1:]
+
     #df=df.iloc[:,"right_hand_19_y":]
     #df=df[df["0_x"]!="NAN"]
     df["correct"]=cnt
