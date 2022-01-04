@@ -1,5 +1,5 @@
 import cv2
-import time
+#import time
 import mediapipe as mp
 import pandas as pd
 import streamlit as st
@@ -11,10 +11,11 @@ mp_drawing = mp.solutions.drawing_utils
 mp_drawing_styles = mp.solutions.drawing_styles
 mp_holistic = mp.solutions.holistic
 desu='/Users/shinohararikunin/Desktop/model'
-modeldesu = models.load_model(desu+'/lstmpose.h5')
+filepath=r'/Users/shinohararikunin/Desktop/privatemysite/image/sign/001_003_001.mp4'
+modeldesu = models.load_model(desu+'/lstmpose2.h5')
 idx=0
 data=[]
-def medi_image(image_pil_array:'PIL.Image',results,idx,data):
+def medi_image(image:'PIL.Image',results,data,idx):
     
 
     if not results.face_landmarks and not results.left_hand_landmarks and not results.right_hand_landmarks and not results.pose_landmarks:
@@ -85,38 +86,36 @@ def pre_image(data):
 
     return pred
 
+def save_all_frames(file):
+
+    cap = cv2.VideoCapture(file)
+    data=[]
+    idx=0
+
+    if not cap.isOpened():
+        return
+    with mp_holistic.Holistic(
+        min_detection_confidence=0.5,
+        min_tracking_confidence=0.5) as holistic:
+          while(cap.isOpened()):
+              ret, image = cap.read()
+              if ret:
+                image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+                #image_loc.image(image)
+                results= holistic.process(image)
+                data,idx=medi_image(image,results,data,idx)
+    kekka=pre_image(data)
+    return kekka
 
 st.title('ポーズ分類')
 image_loc = st.empty()
 scores_st = st.empty()
-# For webcam input:
-cap = cv2.VideoCapture(0)
-with mp_holistic.Holistic(
-    min_detection_confidence=0.5,
-    min_tracking_confidence=0.5) as holistic:
-  while cap.isOpened():
-    success, image = cap.read()
-    if not success:
-      print("Ignoring empty camera frame.")
-      # If loading a video, use 'break' instead of 'continue'.
-      continue
+label_st = st.empty()
 
-    # To improve performance, optionally mark the image as not writeable to
-    # pass by reference.
-    #image.flags.writeable = False
-    image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-    image_loc.image(image)
+video_file = open(filepath, 'rb')
+a=save_all_frames(filepath)
+video_bytes = video_file.read()
 
-    results= holistic.process(image)
-    #st.write(1)
-    data,idx=medi_image(image,results,idx,data)
-    if idx==30:
-        #st.write(data)
-        kekka=pre_image(data)
-        idx=0
-        data=0
-        scores_st.text(kekka)
-        
-    if cv2.waitKey(5) & 0xFF == 27:
-      break
-cap.release()
+st.video(video_bytes)
+st.write(a)
+

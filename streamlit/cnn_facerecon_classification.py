@@ -27,6 +27,7 @@ def get_square_image(target_img):
 		resized_img.paste(target_img, ((height - width) // 2, 0))
 		return resized_img
 
+
 def pre_image(image_pil_array:'PIL.Image'):
 	image_pil_array=get_square_image(image_pil_array)
 	img=image_pil_array.resize((48,48))
@@ -60,6 +61,7 @@ def main():
         st.slider('Neutral:', 0.0, 1.0, float(result[0][4]), 0.01)
         st.slider('Sad:', 0.0, 1.0, float(result[0][5]), 0.01)
         st.slider('Surprise:', 0.0, 1.0, float(result[0][6]), 0.01)
+        
 
 if __name__ == '__main__':
     main()
