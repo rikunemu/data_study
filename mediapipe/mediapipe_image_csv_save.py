@@ -12,9 +12,12 @@ import mediapipe as mp
 
 mp_drawing = mp.solutions.drawing_utils
 mp_face_mesh = mp.solutions.face_mesh
-dir_input1=r"D:\Face\valid\sad\sad\*"
-dir_output_image1=r"D:\Face\csv_save\valid\sad/"
-dir_output_csv1=r"D:\Face\csv_save\valid_sad.csv"
+#dir_input1=r"D:\Face\valid\sad\sad\*"
+dir_input1=r"D:\academic-degree\image\emosions\*"
+#dir_output_image1=r"D:\Face\csv_save\valid\sad/"
+dir_output_image1=r"D:\academic-degree\image/"
+#dir_output_csv1=r"D:\Face\csv_save\valid_sad.csv"
+dir_output_csv1=r"D:\Face\csv_save\a.csv"
 name1="sad"
 flag=0
 
@@ -32,6 +35,7 @@ def mediapipe_static(dir_input, dir_output_image, dir_output_csv, name):
     
     for idx, file in tqdm(enumerate(files, start=0)):
       # 画像の読み込み
+      print(file)
       image = cv2.imread(file)
       # 画像の色の変換
       results = face_mesh.process(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
